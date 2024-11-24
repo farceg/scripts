@@ -146,8 +146,8 @@ class TimerApp:
 
 if __name__ == "__main__":
     # Ask the user for work and rest durations
-    work_time = int(input("Enter work time in minutes: ")) * 1
-    rest_time = int(input("Enter rest time in minutes: ")) * 1
+    work_time = int(input("Enter work time in minutes: ")) * 60
+    rest_time = int(input("Enter rest time in minutes: ")) * 60
 
     app = TimerApp(work_time, rest_time)
     app.start_timer()
