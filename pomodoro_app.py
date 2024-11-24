@@ -3,10 +3,12 @@ import winsound
 
 
 class TimerApp:
-    def __init__(self, duration):
-        self.duration = duration
-        self.remaining = duration
+    def __init__(self, work_duration, rest_duration):
+        self.work_duration = work_duration
+        self.rest_duration = rest_duration
+        self.remaining = work_duration
         self.running = False
+        self.in_work_phase = True  # To track if we are in work or rest phase
         self.create_window()
 
     def create_window(self):
@@ -83,6 +85,7 @@ class TimerApp:
             self.label.config(text="00:00")
             self.running = False
             self.play_sound()
+            self.switch_phase()
 
     def stop_timer(self):
         """Stop the timer and change the Restart button to 'Continue'."""
@@ -102,7 +105,9 @@ class TimerApp:
     def restart_timer(self):
         """Reset the timer to the original duration."""
         self.running = False
-        self.remaining = self.duration
+        self.remaining = (
+            self.work_duration if self.in_work_phase else self.rest_duration
+        )
         self.label.config(text="00:00")
         self.restart_button.config(
             text="Continue", bg="blue", command=self.continue_timer
@@ -112,8 +117,22 @@ class TimerApp:
         """Play a beep sound when the timer ends."""
         winsound.Beep(1000, 1000)
 
+    def switch_phase(self):
+        """Switch between work and rest phases after each block ends."""
+        if self.in_work_phase:
+            self.remaining = self.rest_duration
+            self.in_work_phase = False
+            self.label.config(text="Rest")
+        else:
+            self.remaining = self.work_duration
+            self.in_work_phase = True
+            self.label.config(text="Work")
+        self.restart_button.config(
+            text="Continue", bg="blue", command=self.continue_timer
+        )
+
     def start_timer(self):
-        self.remaining = self.duration
+        self.remaining = self.work_duration
         self.running = True
         self.update_timer()
         self.root.mainloop()
@@ -126,6 +145,9 @@ class TimerApp:
 
 
 if __name__ == "__main__":
-    duration_in_seconds = 25 * 60
-    app = TimerApp(duration_in_seconds)
+    # Ask the user for work and rest durations
+    work_time = int(input("Enter work time in minutes: ")) * 1
+    rest_time = int(input("Enter rest time in minutes: ")) * 1
+
+    app = TimerApp(work_time, rest_time)
     app.start_timer()
