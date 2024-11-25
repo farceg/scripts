@@ -16,19 +16,19 @@ class TimerApp:
         self.root.overrideredirect(True)
         self.root.attributes("-topmost", True)
         self.root.attributes("-alpha", 0.6)
-        self.root.geometry(f"200x90+{self.root.winfo_screenwidth()-210}+10")
+        self.root.geometry(f"160x80+{self.root.winfo_screenwidth()-180}+20")
         self.root.configure(bg="black")
 
         self.close_button = tk.Button(
             self.root,
             text="X",
-            font=("Arial", 12),
+            font=("Arial", 11),
             command=self.close_window,
             bg="black",
             fg="white",
             bd=0,
         )
-        self.close_button.place(x=170, y=5)
+        self.close_button.place(x=140, y=2)
 
         self.label = tk.Label(
             self.root, text="00:00", font=("Arial", 12), bg="black", fg="white"
@@ -115,7 +115,7 @@ class TimerApp:
 
     def play_sound(self):
         """Play a beep sound when the timer ends."""
-        winsound.Beep(1000, 1000)
+        winsound.Beep(4000, 1200)
 
     def switch_phase(self):
         """Switch between work and rest phases after each block ends."""
